@@ -2,6 +2,7 @@
 import { useConversationStore } from "@/stores/conversation";
 import ConversationList from "@/components/ConversationList.vue";
 import MessageList from "@/components/MessageList.vue";
+import MessageInput from "@/components/MessageInput.vue";
 
 const store = useConversationStore();
 
@@ -21,6 +22,21 @@ if (store.conversations.length === 0) {
 
 function handleCreate() {
   store.createConversation(`新会话 ${store.conversations.length + 1}`);
+}
+function handleSend(content: string) {
+  const conv = store.activeConversation;
+  if (!conv) return;
+
+  store.addMessage(conv.id, "user", content);
+
+  // 模拟 AI 回复：0.6 秒后回一句。Week 7 会换成真正的大模型 API
+  const convId = conv.id;
+  setTimeout(() => {
+    // 等待的这 0.6 秒里，用户可能已经把这个会话删了
+    const stillExists = store.conversations.some((c) => c.id === convId);
+    if (!stillExists) return;
+    store.addMessage(convId, "assistant", `（模拟回复）你刚才说的是：${content}`);
+  }, 600);
 }
 </script>
 
@@ -44,9 +60,7 @@ function handleCreate() {
           </h2>
         </header>
         <MessageList :messages="store.activeConversation.messages" />
-        <footer class="p-4 border-t text-sm text-gray-400">
-          输入框 Day 12 加上
-        </footer>
+        <MessageInput @send="handleSend" />
       </template>
 
       <div v-else class="flex-1 flex items-center justify-center text-gray-400">
