@@ -21,6 +21,7 @@ if (store.conversations.length === 0) {
 }
 
 function handleCreate() {
+  store.searchQuery = "";
   store.createConversation(`新会话 ${store.conversations.length + 1}`);
 }
 function handleSend(content: string) {
@@ -43,13 +44,14 @@ function handleSend(content: string) {
 <template>
   <div class="h-screen flex">
     <aside class="w-64 flex-shrink-0 border-r bg-gray-50">
-      <ConversationList
-        :conversations="store.sortedConversations"
-        :active-id="store.activeId"
-        @select="store.selectConversation"
-        @create="handleCreate"
-        @delete="store.deleteConversation"
-      />
+      <ConversationList 
+      v-model:search="store.searchQuery" 
+      :conversations="store.filteredConversations"
+      :active-id="store.activeId" 
+      @select="store.selectConversation" 
+      @create="handleCreate"
+      @delete="store.deleteConversation"
+       />
     </aside>
 
     <main class="flex-1 min-w-0 flex flex-col">

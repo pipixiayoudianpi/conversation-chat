@@ -7,7 +7,7 @@ export const useConversationStore = defineStore("conversation", () => {
   // ===== state：数据 =====
   const conversations = ref<Conversation[]>([]);
   const activeId = ref<string | null>(null);
-
+  const searchQuery = ref("");
   // ===== getters：从数据算出来的值 =====
   // 按最近更新时间排序（先复制再排序，不改动原数组）
   const sortedConversations = computed(() =>
@@ -15,6 +15,16 @@ export const useConversationStore = defineStore("conversation", () => {
       (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
     ),
   );
+  // 按关键词过滤：标题或任意一条消息内容包含关键词，不区分大小写
+  const filteredConversations = computed(() => {
+    const q = searchQuery.value.trim().toLowerCase();
+    if (!q) return sortedConversations.value;
+    return sortedConversations.value.filter(
+      (c) =>
+        c.title.toLowerCase().includes(q) ||
+        c.messages.some((m) => m.content.toLowerCase().includes(q)),
+    );
+  });
 
   // 当前选中的会话，没选中时为 null
   const activeConversation = computed(
@@ -75,11 +85,13 @@ export const useConversationStore = defineStore("conversation", () => {
   return {
     conversations,
     activeId,
+    searchQuery,
     sortedConversations,
     activeConversation,
     createConversation,
     addMessage,
     deleteConversation,
     selectConversation,
+    filteredConversations,
   };
 });
