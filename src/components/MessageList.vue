@@ -39,7 +39,7 @@ watch([() => props.messages, () => props.messages.length], async () => {
                 ">
                 <p class="whitespace-pre-wrap">{{ msg.content }}</p>
                 <p class="text-xs mt-1 opacity-60">
-                    {{ msg.createdAt.toLocaleTimeString() }}
+                    {{ new Date(msg.createdAt).toLocaleTimeString() }}
                 </p>
             </div>
         </div>

@@ -2,17 +2,26 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { Conversation, Message } from "@/types";
+import { useLocalStorage } from "@/composables/useLocalStorage";
 
 export const useConversationStore = defineStore("conversation", () => {
   // ===== state：数据 =====
-  const conversations = ref<Conversation[]>([]);
-  const activeId = ref<string | null>(null);
+  // const conversations = ref<Conversation[]>([]);
+  const conversations = useLocalStorage<Conversation[]>(
+    "conversation-chart:conversations",
+    [],
+  );
+  // const activeId = ref<string | null>(null);
+  const activeId = useLocalStorage<string | null>(
+    "conversation-chart:activeId",
+    null,
+  );
   const searchQuery = ref("");
   // ===== getters：从数据算出来的值 =====
   // 按最近更新时间排序（先复制再排序，不改动原数组）
   const sortedConversations = computed(() =>
     [...conversations.value].sort(
-      (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
+      (a, b) => b.updatedAt - a.updatedAt,
     ),
   );
   // 按关键词过滤：标题或任意一条消息内容包含关键词，不区分大小写
@@ -33,7 +42,7 @@ export const useConversationStore = defineStore("conversation", () => {
 
   // ===== actions：修改数据的操作 =====
   function createConversation(title: string): Conversation {
-    const now = new Date();
+    const now = Date.now();
     const conv: Conversation = {
       id: crypto.randomUUID(),
       title,
@@ -58,10 +67,10 @@ export const useConversationStore = defineStore("conversation", () => {
       id: crypto.randomUUID(),
       role,
       content,
-      createdAt: new Date(),
+      createdAt: Date.now(),
     };
     conv.messages.push(msg);
-    conv.updatedAt = new Date();
+    conv.updatedAt = Date.now();
     return msg;
   }
 

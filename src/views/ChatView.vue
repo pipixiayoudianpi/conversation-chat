@@ -7,18 +7,18 @@ import MessageInput from "@/components/MessageInput.vue";
 const store = useConversationStore();
 
 // 临时示例数据，Day 12 做完持久化后删掉
-if (store.conversations.length === 0) {
-  const c1 = store.createConversation("问 AI 怎么学 TS");
-  store.addMessage(c1.id, "user", "我该怎么学 TypeScript？");
-  store.addMessage(c1.id, "assistant", "先掌握 6 大核心点，然后实战写类。");
-  const c2 = store.createConversation("问 AI 怎么学 Git");
-  store.addMessage(c2.id, "user", "Git 三区是什么？");
-  store.addMessage(
-    c2.id,
-    "assistant",
-    "工作区、暂存区、仓库。\ngit add 把改动放进暂存区，git commit 把暂存区存成一次提交。",
-  );
-}
+// if (store.conversations.length === 0) {
+//   const c1 = store.createConversation("问 AI 怎么学 TS");
+//   store.addMessage(c1.id, "user", "我该怎么学 TypeScript？");
+//   store.addMessage(c1.id, "assistant", "先掌握 6 大核心点，然后实战写类。");
+//   const c2 = store.createConversation("问 AI 怎么学 Git");
+//   store.addMessage(c2.id, "user", "Git 三区是什么？");
+//   store.addMessage(
+//     c2.id,
+//     "assistant",
+//     "工作区、暂存区、仓库。\ngit add 把改动放进暂存区，git commit 把暂存区存成一次提交。",
+//   );
+// }
 
 function handleCreate() {
   store.searchQuery = "";

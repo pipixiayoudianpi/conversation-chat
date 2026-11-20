@@ -4,13 +4,13 @@ export interface Message {
   readonly id: string;
   role: "user" | "assistant" | "system";
   content: string;
-  createdAt: Date;
+  createdAt: number;
 }
 
 export interface Conversation {
   readonly id: string;
   title: string;
   messages: Message[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 }
