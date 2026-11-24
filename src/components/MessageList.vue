@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import { useTemplateRef } from "vue";
 import type { Message } from "@/types";
-import { useAutoScroll } from "@/components/useAutoScroll";
+import { useAutoScroll } from "@/composables/useAutoScroll";
 
 const { messages } = defineProps<{
     messages: Message[];
