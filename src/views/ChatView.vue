@@ -4,6 +4,7 @@ import { useConversationStore } from "@/stores/conversation";
 import ConversationList from "@/components/ConversationList.vue";
 import MessageList from "@/components/MessageList.vue";
 import MessageInput from "@/components/MessageInput.vue";
+import { watchEffect } from "vue";
 
 const store = useConversationStore();
 
@@ -15,7 +16,11 @@ const {
   activeId,
   searchQuery,
 } = storeToRefs(store);
-
+// 浏览器标签页标题跟着当前会话变
+watchEffect(() => {
+  const title = activeConversation.value?.title;
+  document.title = title ? `${title} · ConversationChat` : "ConversationChat";
+});
 // 函数：直接解构
 const { createConversation, addMessage, selectConversation, deleteConversation } =
   store;
