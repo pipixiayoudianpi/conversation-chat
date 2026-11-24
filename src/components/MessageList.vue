@@ -1,28 +1,27 @@
 <script setup lang="ts">
-import { watch, nextTick, onMounted, useTemplateRef } from "vue";
+// import { useTemplateRef } from "vue";
 import type { Message } from "@/types";
+import { useAutoScroll } from "@/components/useAutoScroll";
 
-const { messages} = defineProps<{
+const { messages } = defineProps<{
     messages: Message[];
 }>();
 
 // 拿到模板里 ref="container" 的那个 DOM 元素
-const container = useTemplateRef<HTMLDivElement>("container");
+// const container = useTemplateRef<HTMLDivElement>("container");
 
-function scrollToBottom(smooth = true) {
-    const el = container.value;
-    if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "auto" });
-}
+// function scrollToBottom(smooth = true) {
+//     const el = container.value;
+//     if (!el) return;
+//     el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "auto" });
+// }
 
 // 首次显示时直接跳到底部
-onMounted(() => scrollToBottom(false));
+// onMounted(() => useAutoScroll(container, true));
 
 // 切换会话、或者消息条数变化时，滚到底部
-watch([() => messages, () => messages.length], async () => {
-    await nextTick();
-    scrollToBottom();
-});
+
+useAutoScroll('container', [() => messages, () => messages.length]);
 </script>
 
 <template>
