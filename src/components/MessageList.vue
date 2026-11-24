@@ -2,7 +2,7 @@
 import { watch, nextTick, onMounted, useTemplateRef } from "vue";
 import type { Message } from "@/types";
 
-const props = defineProps<{
+const { messages} = defineProps<{
     messages: Message[];
 }>();
 
@@ -19,7 +19,7 @@ function scrollToBottom(smooth = true) {
 onMounted(() => scrollToBottom(false));
 
 // 切换会话、或者消息条数变化时，滚到底部
-watch([() => props.messages, () => props.messages.length], async () => {
+watch([() => messages, () => messages.length], async () => {
     await nextTick();
     scrollToBottom();
 });
